@@ -1,0 +1,10 @@
+.DS_Store
+
+*.mp4
+*.jpeg
+*.jpg
+*.png
+*.gif
+
+!shalala.mp4
+!InCube.gif

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome InCubers</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      position: relative;
+      height: 100%;
+      width: 100%;
+
+      display: flex;
+      flex-direction: column;
+      /* background-color: #34042c;
+      box-shadow: 3px 0px 12px 0px #6e0c5c; */
+    }
+
+    .img {
+      width: 100%;
+      height: 100vh;
+      /* margin: 50px auto; */
+    }
+
+    .music {
+      position: absolute;
+      opacity: 0;
+      z-index: -10;
+    }
+
+    .timer span {
+      display: none;
+    }
+
+    .timer.show span {
+      display: inline;
+    }
+
+    .timer div {
+      display: block;
+    }
+
+    .timer.show div {
+      display: none;
+    }
+
+    .timer {
+      font-family: 'Space Mono', monospace;
+      position: absolute;
+      bottom: 2em;
+      /* right: 4.7em; */
+      /* background-color: rgba(178, 31, 112, 1);
+      padding: 0.15em 0.5em; */
+      border-radius: 2em;
+      color: #fff;
+      font-size: 52px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    .colon {
+      animation: blink 1s linear 0s infinite;
+    }
+
+    @keyframes blink {
+      from {
+        opacity: 1;
+      }
+
+      to {
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <img class="img" src="images/InCube_1.gif" alt="">
+  <!-- <video class="img" src="vid/anim1.mp4" autoplay="autoplay" muted loop></video> -->
+  <div class="timer show" id="timer">
+    <div>Let's begin</div>
+    <span id="h">00</span>
+    <span class="colon">:</span>
+    <span id="m">00</span>
+    <span class="colon">:</span>
+    <span id="s">00</span>
+  </div>
+  <video id='vid' class="music" src="audio/shalala.mp4" autoplay loop controls></video>
+  <script>
+    window.onload = function () {
+      let vid = document.getElementById('vid');
+      vid.volume = .2;
+      // vid.play();
+      // vid.pause();
+
+      let targetTime = new Date();
+      targetTime.setHours(18, 05, 00, 00);
+
+      let hourDisplay = document.getElementById('h');
+      let minuteDisplay = document.getElementById('m');
+      let secondDisplay = document.getElementById('s');
+
+      let timer = document.getElementById('timer');
+
+      let intervalId = setInterval(function () {
+        let currentTime = new Date();
+        if (currentTime >= targetTime) {
+          clearInterval(intervalId);
+          timer.classList.remove('show');
+          if (!vid.paused) vid.pause();
+          return;
+        }
+
+        let diff = targetTime - currentTime;
+        if (diff < 10000 && !vid.paused) {
+          vid.pause();
+        }
+        let seconds = parseInt(diff / 1000);
+
+        let hour = parseInt(seconds / 3600);
+        seconds %= 3600;
+
+        let minute = parseInt(seconds / 60);
+        seconds %= 60;
+
+        let second = parseInt(seconds);
+
+        hourDisplay.innerText = hour.toString().padStart(2, '0');
+        minuteDisplay.innerText = minute.toString().padStart(2, '0');
+        secondDisplay.innerText = second.toString().padStart(2, '0');
+      }, 1000);
+    }
+  </script>
+</body>
+
+</html>
